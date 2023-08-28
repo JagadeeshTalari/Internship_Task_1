@@ -1,0 +1,19 @@
+.sectionsParent {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin-top: 6rem;
+}
+
+.SingleSectionParent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.SingleSectionParent > div {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  padding-left: 2rem;
+}

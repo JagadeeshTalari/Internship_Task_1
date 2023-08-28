@@ -1,68 +1,101 @@
 import { useState } from "react";
-import { CardArray } from "../utility/data";
+import { CardArray, sectionArray } from "../utility/data";
 import Card from "./Card";
-
-const Sec1Array = CardArray.filter((cardObj) => {
-  return cardObj.parent_sec === "section1";
-});
-const Sec2Array = CardArray.filter((cardObj) => {
-  return cardObj.parent_sec === "section2";
-});
-const Sec3Array = CardArray.filter((cardObj) => {
-  return cardObj.parent_sec === "section3";
-});
+import "./Section.css";
 
 function Section() {
-  const [cardsState, setCardsState] = useState(false);
-  const [cardsState2, setCardsState2] = useState(false);
+  const [cardsState, setCardsState] = useState([false, false, false]);
+
+  console.log(cardsState);
+
+  function handleIncrementClick(index) {
+    const nextCardsState = cardsState.map((c, i) => {
+      if (i === index) {
+        // Increment the clicked counter
+        return !c;
+      } else {
+        // The rest haven't changed
+        return c;
+      }
+    });
+    setCardsState(nextCardsState);
+  }
+
   return (
-    <div>
-      <div className="section1" style={{ display: "flex", flexWrap: "wrap" }}>
-        {/* <div>{x.title}</div> */}
-        <div>Section1</div>
-        {Sec1Array.map((x) => {
-          return <Card key={x.id} x={x}></Card>;
+    <>
+      <div className="sectionsParent">
+        {sectionArray.map((sec, i) => {
+          return (
+            <div className="SingleSectionParent" key={i}>
+              <div>
+                <h2>{sec.title}</h2>
+                <button
+                  onClick={() => {
+                    handleIncrementClick(sec.sec_no - 1);
+                  }}
+                >
+                  {!cardsState[sec.sec_no - 1] ? `See All` : `See Less`}
+                </button>
+              </div>
+              {cardsState[sec.sec_no - 1] ? (
+                <section
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "2rem",
+                    justifyContent: "flex-start",
+                    maxWidth: "1000px",
+                    margin: "auto",
+                    // minWidth: "50%",
+                    height: "auto",
+                  }}
+                >
+                  {CardArray.filter((cardObj) => {
+                    return cardObj.parent_sec_no === sec.sec_no;
+                  }).map((x) => {
+                    return (
+                      <div>
+                        <Card key={x.id} x={x}></Card>
+                      </div>
+                    );
+                  })}
+                </section>
+              ) : (
+                <section
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "flex-start",
+                    maxWidth: "1000px",
+                    margin: "auto",
+                    gap: "2rem",
+                    height: "auto",
+                  }}
+                >
+                  {CardArray.filter((cardObj) => {
+                    return cardObj.parent_sec_no === sec.sec_no;
+                  })
+                    .map((x) => {
+                      return (
+                        <div key={x.id}>
+                          <Card key={x.id} x={x}></Card>
+                        </div>
+                      );
+                    })
+                    .slice(0, 3)}
+                </section>
+              )}
+            </div>
+          );
         })}
       </div>
-      <div className="section2" style={{ display: "flex", flexWrap: "wrap" }}>
-        {/* <div>{x.title}</div> */}
-        <div>Section2</div>
-        <div
-          onClick={() => {
-            setCardsState(!cardsState);
-          }}
-          style={{ fontSize: "30px" }}
-        >
-          {cardsState ? `See All` : `See Less`}
-        </div>
-        {cardsState
-          ? Sec2Array.map((x) => {
-              return <Card key={x.id} x={x}></Card>;
-            }).slice(0, 3)
-          : Sec2Array.map((x) => {
-              return <Card key={x.id} x={x}></Card>;
-            })}
-      </div>
-      <div className="section3" style={{ display: "flex", flexWrap: "wrap" }}>
-        {/* <div>{x.title}</div> */}
-        <div>Section3</div>
-        <div
-          onClick={() => {
-            setCardsState2(!cardsState2);
-          }}
-          style={{ fontSize: "30px" }}
-        >
-          {cardsState2 ? `See All` : `See Less`}
-        </div>
-        {cardsState2
-          ? Sec3Array.map((x) => {
-              return <Card key={x.id} x={x}></Card>;
-            }).slice(0, 3)
-          : Sec3Array.map((x) => {
-              return <Card key={x.id} x={x}></Card>;
-            })}
-      </div>
-    </div>
+    </>
   );
 }
 export default Section;
+
+// [
+//   cardArray --> cardObj * 17
+
+//   forEach ==> sec
+// ]

@@ -12,6 +12,7 @@ function App() {
   const a = theme === "white" ? "#212121" : "white";
   return (
     <div className="App" style={{ backgroundColor: theme, color: a }}>
+      {/* Theme Changer */}
       <button
         onClick={() => {
           theme === "white" ? setTheme("#212121") : setTheme("white");
@@ -20,11 +21,13 @@ function App() {
         Theme Changer
       </button>
       <BrowserRouter>
+        {/* Banners */}
         <div className="AllBanners">
           {bannerArray.map((x) => {
             return <Banner key={x.id_no} x={x}></Banner>;
           })}
         </div>
+        {/* Sections - with Cards */}
         <Section />
       </BrowserRouter>
     </div>
